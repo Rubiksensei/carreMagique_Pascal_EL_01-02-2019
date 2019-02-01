@@ -1,0 +1,81 @@
+CONST
+    size = 7
+
+VAR
+    x, y, nbr, cases, i : ENTIER
+    carre : TABLEAU[1..size,1..size] de ENTIER
+
+procedure Init
+DEBUT
+    POUR x DE 1 A size FAIRE
+        POUR y ← 1 A size FAIRE
+        
+            carre[x,y] ← 0
+        FINPOUR
+    FINPOUR
+FIN
+
+procedure InitPos
+DEBUT
+    nbr ← 1
+    cases ← size*size
+    x ← ((size DIV 2)+1)-1
+    y ← ((size DIV 2)+1)
+FIN
+
+procedure Fill
+DEBUT
+    carre[x,y] ← nbr
+    POUR i DE 1 A (cases-1) FAIRE
+        nbr ← nbr+1
+        x ← x-1
+        y ← y+1
+
+        //Test dépassement bordure
+        SI y>size ALORS
+            y ← 1
+        FINSI
+        SI x<1 ALORS
+            x ← size
+        FINSI
+        SI y<1 ALORS
+            y ← size
+        FINSI
+
+        //Test cellule occopée 
+        TANT QUE carre[x,y]<>0 FAIRE
+            x ← x-1
+            y ← y-1
+            //Test dépassement bordure
+            SI y>size ALORS
+            y ← 1
+            SI x<1 ALORS
+                x ← size
+            SI y<1 ALORS
+                y ← size
+        FINTANTQUE
+        carre[x,y] ← nbr
+    FINPOUR
+FIN
+
+procedure Print
+DEBUT
+    POUR x ← 1 A size FAIRE
+        POUR y ← 1 A size FAIRE
+            write('|')
+            Write(carre[x,y]:2)
+        FINPOUR
+        write('|')
+        WriteLn()
+    FINPOUR 
+FIN
+
+DEBUT
+    Init
+
+    InitPos
+
+    Fill
+
+    Print
+FIN
